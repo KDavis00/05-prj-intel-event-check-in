@@ -342,6 +342,48 @@ select {
   color: #475569;
 }
 
+/* Attendee List Styles */
+.attendee-list {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #f1f5f9;
+}
+
+.attendee-list h3 {
+  color: #64748b;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.attendees-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.attendee-card {
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attendee-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.attendee-team {
+  font-size: 14px;
+  color: #64748b;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: white;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .hero {
