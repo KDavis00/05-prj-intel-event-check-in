@@ -35,7 +35,7 @@ body {
   background-size: cover;
   background-position: center;
   text-align: center;
-  padding: 60px 32px;
+  padding: 70px 32px;
   color: #fff;
   margin-bottom: 34px;
 }
@@ -77,10 +77,10 @@ body {
 
 /* Main container */
 .container {
-  max-width: 700px;
+  max-width: 800px;
   width: 90%;
-  margin: 0 auto 20px;
-  padding: 26px;
+  margin: 0 auto 40px;
+  padding: 32px;
   background: white;
   border-radius: 16px;
   box-shadow: 0 5px 24px rgba(0, 60, 116, 0.07);
@@ -175,10 +175,10 @@ button .fas {
 
 /* Attendance tracker styling */
 .attendance-tracker {
-  max-width: 700px;
+  max-width: 800px;
   width: 90%;
-  margin: 0 auto 40px;
-  padding: 0 20px;
+  margin: 0 auto 30px;
+  padding: 0;
   text-align: center;
 }
 
@@ -214,7 +214,7 @@ button .fas {
 /* Progress container - simplified */
 .progress-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   height: 16px;
   background-color: #e0e0e0;
   border-radius: 10px;
