@@ -3,6 +3,7 @@ const form = document.getElementById('checkInForm');
 const attendeeCount = document.getElementById('attendeeCount');
 const progressBar = document.getElementById('progressBar');
 const greeting = document.getElementById('greeting');
+const attendeeList = document.getElementById('attendeeList');
 
 // Initialize variables
 const maxAttendees = 50;
@@ -15,6 +16,46 @@ let teamCounts = {
 
 // Track attendees and their teams
 let attendeeRegistry = {};
+
+// Load data from local storage
+function loadFromLocalStorage() {
+  const savedData = localStorage.getItem('eventData');
+  if (savedData) {
+    const data = JSON.parse(savedData);
+    currentAttendees = data.currentAttendees;
+    teamCounts = data.teamCounts;
+    attendeeRegistry = data.attendeeRegistry;
+    
+    // Update UI with saved data
+    updateProgress();
+    updateTeamStats();
+    updateAttendeeList();
+  }
+}
+
+// Save data to local storage
+function saveToLocalStorage() {
+  const data = {
+    currentAttendees,
+    teamCounts,
+    attendeeRegistry
+  };
+  localStorage.setItem('eventData', JSON.stringify(data));
+}
+
+// Function to update attendee list
+function updateAttendeeList() {
+  attendeeList.innerHTML = '';
+  Object.entries(attendeeRegistry).forEach(([name, team]) => {
+    const attendeeCard = document.createElement('div');
+    attendeeCard.className = 'attendee-card';
+    attendeeCard.innerHTML = `
+      <span class="attendee-name">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+      <span class="attendee-team">${teamNames[team]}</span>
+    `;
+    attendeeList.appendChild(attendeeCard);
+  });
+}
 
 // Team name mapping for friendly display
 const teamNames = {
@@ -55,9 +96,20 @@ function updateTeamStats(team) {
 
 // Function to show celebration message
 function showCelebration() {
-  greeting.textContent = '🎉 Congratulations! We\'ve reached our attendance goal! Thank you all for participating!';
+  // Find winning team(s)
+  const maxCount = Math.max(...Object.values(teamCounts));
+  const winningTeams = Object.entries(teamCounts)
+    .filter(([_, count]) => count === maxCount)
+    .map(([team, _]) => teamNames[team]);
+  
+  const winningTeamMessage = winningTeams.length === 1 
+    ? `${winningTeams[0]} wins with ${maxCount} attendees!` 
+    : `It's a tie between ${winningTeams.join(' and ')} with ${maxCount} attendees each!`;
+  
+  greeting.textContent = `🎉 Congratulations! We've reached our attendance goal! ${winningTeamMessage}`;
   greeting.style.display = 'block';
   greeting.className = 'success-message';
+  
   document.querySelectorAll('.team-card').forEach(card => {
     card.style.transform = 'scale(1.05)';
     card.style.transition = 'transform 0.3s ease';
@@ -112,7 +164,7 @@ form.addEventListener('submit', function(event) {
   
   // Show personalized greeting
   if (currentAttendees < maxAttendees) {
-    greeting.textContent = `Welcome ${name} to ${teamNames[team]}! Thank you for joining us.`;
+    greeting.textContent = `Welcome ${name} from ${teamNames[team]}! Thank you for joining us.`;
     greeting.style.display = 'block';
     greeting.className = 'success-message';
   }
@@ -126,6 +178,15 @@ form.addEventListener('submit', function(event) {
     showCelebration();
   }
 
+  // Update attendee list
+  updateAttendeeList();
+  
+  // Save data to local storage
+  saveToLocalStorage();
+  
   // Reset form
   form.reset();
 });
+
+// Load saved data when page loads
+document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
